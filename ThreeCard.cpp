@@ -8,7 +8,7 @@
 #include <iomanip>	// cout/cin formatting
 #include <random>
 #include "Card.cpp"
-#ifndef
+#ifndef THREECARD_CPP
 #define THREECARD_CPP
 
 // enum for stat array for each guessing method
@@ -22,13 +22,21 @@ class ThreeCard {
 	    simulate(X);
 	    printResults();
 	}
-	~ThreeCard() {	destructor deallocates allocated arrays
-	    // TODO: deallocate arrays
+	~ThreeCard() {	//	destructor deallocates allocated Card objects
+	    for (Card& i: deck_of_cards)
+		delete i;
 	}
 	void printResults() const {
 	    // TODO: print results of the simulation
+	    std::cout<<"this is a test\n";
 	}
     private:
+	// simulate for x guess
+	void simulate(const int& x) {
+	    // TODO: simulate guess
+	}
+    
+	// guess the opposite color
 	bool guessOpposite(const Card & card) const {
 	    // TODO: guess opposite color
 	}
@@ -54,7 +62,13 @@ class ThreeCard {
 	}
 	// inititalize all stat variables
 	void init() {
-	    // TODO: allocate all vars
+	    // allocate/initialize three cards 
+	    deck_of_cards[0] = new Card("white","white");
+	    deck_of_cards[1] = new Card("black","black");
+	    deck_of_cards[2] = new Card("black","white");
+	    // initalize stats array to 0s
+	    for (int& i: stats)
+		i=0;
 	}
 	Card *deck_of_cards[3];		    // array of Cards
 	int stats[6];			    // stat array of correct guesses by each of the techniques

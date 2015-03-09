@@ -7,7 +7,7 @@
 #include <random>
 #include <exception>
 
-#ifndef
+#ifndef CARD_CPP
 #define CARD_CPP
 
 // overflow on construct exception
@@ -19,7 +19,7 @@ class overflow_exception: public std::exception {
 };
 class Card {
     public:
-	Card(const std::String& frt, const std::String& bk) {
+	Card(const std::string& frt, const std::string& bk) {
 	    if ( frt.length() > 15 || bk.length()>15 )	{	// if 
 		throw overflow_exception();
 	    } else {				// if both arguments are valid
@@ -40,26 +40,27 @@ class Card {
 	}
 	// show one side of the card
 	const char* show() const {
-	    return face->cstring.data();	// return char* data of face
+	    return face->data();	// return char* data of face
 	}
 	// oprator== for char*
 	bool operator== (const char* cstring) const {
-	    if ( face->data() == cstring )	// if data() in face == cstring
+	    std::string cstr_for_compar(cstring);
+	    if ( *face == cstr_for_compar )	// if data() in face == cstring
 		return true;
 	    else
 		return false;
 	}
-	// operator== for std::String
-	bool operator== (const std::String& string) const {
-	    if ( &face == string )	    // if objects are equal
+	// operator== for std::string
+	bool operator== (const std::string& str) const {
+	    if ( *face == str )	    // if objects are equal
 		return true;
 	    else 
 		return false;
 	}
     private:
-	std::String* face;	// pointer to the card to be shown
-	std::String front;
-	std::String back;
+	std::string* face;	// pointer to the card to be shown
+	std::string front;
+	std::string back;
 };
 
 #endif
