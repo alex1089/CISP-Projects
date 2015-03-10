@@ -6,6 +6,7 @@
 #include <string>
 #include <random>
 #include <exception>
+#include <iostream>
 
 #ifndef CARD_CPP
 #define CARD_CPP
@@ -29,33 +30,39 @@ class Card {
 	}
 	// shuffles the side to be shown
 	void shuffle() {
-	    std::default_random_engine gen;	    // random number engine
-	    std::uniform_int_distribution<int> distribution(1,2);	// uniform int distribution range [1,2]
+	    static std::default_random_engine gen(3);	    // random number engine
+	    static std::uniform_int_distribution<int> distribution(0,1);	// uniform int distribution range [1,2]
 	    int side = distribution(gen);
 
 	    if (side == 1)  // if front
 		face=&front;	// assign card to be shown 
-	    else
+	    else 
 		face=&back;
 	}
+	
 	// show one side of the card
-	const char* show() const {
-	    return face->data();	// return char* data of face
+	const std::string show() const {
+	    return *face;	// return string data of face
 	}
-	// oprator== for char*
-	bool operator== (const char* cstring) const {
-	    std::string cstr_for_compar(cstring);
-	    if ( *face == cstr_for_compar )	// if data() in face == cstring
-		return true;
-	    else
-		return false;
-	}
-	// operator== for std::string
+	
+	// operator== for std::string T/F if opposite side matches
 	bool operator== (const std::string& str) const {
-	    if ( *face == str )	    // if objects are equal
-		return true;
-	    else 
-		return false;
+	    if ( face == &front){	// if face is the front, return opposite
+		if (!back.compare(str)){	    // if string are equal
+		    //std::cout<<back<<" "<<str<<std::endl;
+
+		    return true;
+		} else {
+		    return false;
+		}
+	    } else {
+		if (!front.compare(str)) {
+		    //std::cout<<front<<" "<<str<<std::endl;
+		    return true;
+		} else {
+		    return false;
+		}
+	    }
 	}
     private:
 	std::string* face;	// pointer to the card to be shown
